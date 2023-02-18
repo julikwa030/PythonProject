@@ -50,7 +50,11 @@ def authenticate_user(fake_db, username: str, password: str):
 
 @app.get("/")
 async def root():
-    return {"Hello user, here you can test available functions: http://127.0.0.1:8000/docs#"}
+    return {"Hello user, these are the functions of this app which you can try yourself: "
+            " - Check if given number is prime: https://python-project.herokuapp.com/prime/{number}"
+            " - Check the current time after give credentials: "
+            " https://python-project.herokuapp.com/user/time?username={username}&password={password}"}
+#    return {"Hello user, here you can test available functions: http://127.0.0.1:8000/docs#"}
 
 
 # endpoint checks if number is prime
