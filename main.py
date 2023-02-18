@@ -67,12 +67,12 @@ async def is_prime(number):
 
 
 # endpoint inverts colour of the picture which is given by the path
-@app.post("/picture/invert")
-async def invert_picture(pathname: str):
-    image = cv2.imread(pathname)
-    new_image = cv2.bitwise_not(image)
-    tmp = cv2.imwrite('files/newpicture.png', new_image)
-    return {"message": f"Saving: {tmp}"}
+# @app.post("/picture/invert")
+# async def invert_picture(pathname: str):
+#    image = cv2.imread(pathname)
+#    new_image = cv2.bitwise_not(image)
+#    tmp = cv2.imwrite('files/newpicture.png', new_image)
+#    return {"message": f"Saving: {tmp}"}
 
 
 # endpoint which gives current date after authenticate user with username and password
