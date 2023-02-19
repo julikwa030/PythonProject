@@ -15,5 +15,5 @@ class Tests(HttpUser):
 
     @task(2)
     def user_test(self):
-        self.client.get(url='user/time?username=test&password=test')
+        self.client.get(url='user/time', headers={"username": "test", "password": "test"})
 
