@@ -1,8 +1,11 @@
 import cv2
-from fastapi import FastAPI
+from fastapi import FastAPI, File, UploadFile
 from pydantic import BaseModel
 from passlib.context import CryptContext
 from datetime import datetime
+from PIL import Image, ImageOps
+from io import BytesIO
+from fastapi.responses import StreamingResponse
 
 # database with user
 user_db = {
@@ -50,10 +53,7 @@ def authenticate_user(fake_db, username: str, password: str):
 
 @app.get("/")
 async def root():
-    return {"Hello user, these are the functions of this app which you can try yourself: "
-            " - Check if given number is prime: https://python-project.herokuapp.com/prime/{number}"
-            " - Check the current time after give credentials: "
-            " https://python-project.herokuapp.com/user/time?username={username}&password={password}"}
+    return {"Hello user!"}
 #    return {"Hello user, here you can test available functions: http://127.0.0.1:8000/docs#"}
 
 
@@ -71,12 +71,14 @@ async def is_prime(number):
 
 
 # endpoint inverts colour of the picture which is given by the path
-# @app.post("/picture/invert")
-# async def invert_picture(pathname: str):
-#    image = cv2.imread(pathname)
-#    new_image = cv2.bitwise_not(image)
-#    tmp = cv2.imwrite('files/newpicture.png', new_image)
-#    return {"message": f"Saving: {tmp}"}
+@app.post("/picture/invert")
+async def invert_picture(img: UploadFile = File(...)):
+    image = Image.open(img.file)
+    image = ImageOps.invert(image)
+    new_image = BytesIO()
+    image.save(new_image, "JPEG")
+    new_image.seek(0)
+    return StreamingResponse(new_image, media_type="image/jpeg")
 
 
 # endpoint which gives current date after authenticate user with username and password
